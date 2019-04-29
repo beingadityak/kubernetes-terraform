@@ -1,5 +1,5 @@
 # DevOps assignment
-* CWe would like to host this application on kubernetes. Follow readme to get application started. You will need PostgresSQL and Node.js runtime
+* We would like to host this application on kubernetes. Follow readme to get application started. You will need PostgresSQL and Node.js runtime
 
 ### Requirements
 
@@ -10,7 +10,6 @@
 * User https://www.freenom.com to get free domain and map with your hosted service 
 * Setup SSL using https://letsencrypt.org/ 
 * Auto scale app when CPU or memory load is above 75%
-
 
 ### Bonus
 * Terraform implementation
