@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nodejs
+  template:
+    metadata:
+      labels:
+        app: nodejs
+    spec:
+      containers:
+      - name: nodejs
+        image: "gcr.io/zuru-tech-hiring/nodejs:latest"
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "64Mi"
+            cpu: "50m"
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+            - name: nodejs-persistent-storage
+              mountPath: /backup
+      volumes:
+        - name: nodejs-persistent-storage
+          persistentVolumeClaim:
+            claimName: nodejs-volumeclaim
