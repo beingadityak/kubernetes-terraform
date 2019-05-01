@@ -28,9 +28,22 @@ spec:
 
 ---
 
+apiVersion: networking.gke.io/v1beta1
+kind: ManagedCertificate
+metadata:
+  name: nodejs-domain-certificate
+spec:
+  domains:
+    - mytestwebsite.tk
+
+---
+
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: nodejs-static-ip
+    networking.gke.io/managed-certificates: nodejs-domain-certificate
   labels:
     app: nodejs
   name: nodejs
