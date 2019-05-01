@@ -4,6 +4,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.global-static-ip-name: nodejs-static-ip
     networking.gke.io/managed-certificates: nodejs-domain-certificate
+    kubernetes.io/ingress.allow-http: "false"
   labels:
     app: nodejs
   name: nodejs
