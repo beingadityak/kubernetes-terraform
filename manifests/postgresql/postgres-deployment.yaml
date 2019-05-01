@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  labels:
+    app: postgresql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodejs
+      tier: postgres
+  template:
+    metadata:
+      labels:
+        app: postgresql
+        tier: postgres
+    spec:
+      containers:
+        - image: postgres
+          name: postgres
+          resources:
+            requests:
+              memory: 100Mi
+              cpu: 50m
+            limits:
+              memory: 1536Mi
+              cpu: 55m
+          env:
+            - name: POSTGRES_DB
+              value: postgres
+            - name: POSTGRES_USER
+              value: user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: root_password
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          ports:
+            - containerPort: 5432
+              name: postgres
+          volumeMounts:
+            - name: postgres-stateful-data
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: postgres-stateful-data
+          persistentVolumeClaim:
+            claimName: postgres-pvc
