@@ -8,13 +8,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: nodejs
-      tier: postgres
+      app: postgresql
   template:
     metadata:
       labels:
         app: postgresql
-        tier: postgres
     spec:
       containers:
         - image: postgres
