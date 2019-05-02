@@ -1,0 +1,5 @@
+project = "zuru-tech-hiring"
+region = "us-central1"
+cluster_name = "terraform-cluster"
+domain = "nodejswebsitegcp.tk"
+managed_zone = "nodejswebsitegcp"
