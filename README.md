@@ -1,22 +1,20 @@
 # DevOps assignment
-* We would like to host this application on kubernetes. Follow readme to get application started. You will need PostgresSQL and Node.js runtime
 
-### Requirements
+I have deployed a simple Node.js application in Kubernetes with separate deployments for Node.js and PostgreSQL database. The code for the same resides in `app` directory. This app basically provides you random strips of various comics through web scraping (List available at `/api` endpoint).
 
-* Copy above mentioned repo over here.
-* Create separate service for PostgreSQL database and Node.js application in kubernetes.
-* Create Dockerfile for this repo and for use stable Postgres docker image from dockerhub.
-* Setup Free GCP account and host this service over there.
-* User https://www.freenom.com to get free domain and map with your hosted service 
-* Setup SSL using https://letsencrypt.org/ 
-* Auto scale app when CPU or memory load is above 75%
+## Pre-requisites
 
-### Bonus
-* Terraform implementation
-* Implement a Gitlab CI to deploy it.
+* You should have `credentials.json` handy and it must be placed in `terraform` directory.
+* An image of the app must be created in GCR (which is made easy by running `deploy.sh` in `app` directory)
+* You must have a domain and that must be managed by GCP (i.e. a Hosted Zone must be present in Cloud DNS)
 
-### Notes
-* Create proper readme for walkthrough of this assignment.
-* Please revert back with timeline on when will you be able to complete this.
+## Setting up the cluster
 
-You can create a branch and commit there your work. When you a final version submit a merge request so we can review your work. If you need you can use WIP merge request.
+* The setup of the cluster is made easy by using `configure.sh` present in the root.
+* The terraform part of this script will deploy a GKE cluster of 2 nodes, create a static IP address and add that as an A record in the hosted zone and configure the kubectl for the cluster.
+* The kubectl part of the script will deploy a 3-pod deployment of the Node.js app with a Load Balancer DNS & SSL certs for the domain (managed by Google and CA is **letsencrypt**) and a single pod deployment of the PostgreSQL DB (which is deployed using the official image). Please note that it may take up to 20 minutes for the certs to become available.
+* Deployment manifests are available at `manifests` directory.
+
+## Cleaning up
+
+* Run the `cleanup.sh` script for tearing down the environment.
