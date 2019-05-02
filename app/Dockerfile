@@ -1,4 +1,7 @@
 FROM node:10.15
-EXPOSE 8080
-COPY server.js .
-CMD node server.js
+WORKDIR '/app'
+COPY ./package.json ./
+COPY ./package-lock.json ./
+RUN npm install
+COPY . .
+CMD ["npm", "run", "start"]

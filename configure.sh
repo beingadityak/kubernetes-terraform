@@ -3,10 +3,10 @@
 ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 CLUSTER_NAME=`cat $ROOT/terraform/terraform.tfvars | grep cluster_name | awk '{print $3}' | sed -e 's/^"//' -e 's/"$//'`
-PROJECT=`cat $ROOT/terraform/terraform.tfvars | grep project | awk '{print $3}' | sed -e 's/^"//' -e 's/"$//'``
+PROJECT=`cat $ROOT/terraform/terraform.tfvars | grep project | awk '{print $3}' | sed -e 's/^"//' -e 's/"$//'`
 
 echo "Checking for credentials.json in terraform directory...";
-if [[ -f "$ROOT/terraform/credentials.json" ]]; then
+if [ ! -f "$ROOT/terraform/credentials.json" ]; then
     echo "Credentials file not present! You can create one by creating a service account";
     exit 1;
 fi
@@ -24,7 +24,7 @@ gcloud container clusters get-credentials "${CLUSTER_NAME}" --region "${certific
 
 echo "Deployment Complete! Please note that the certs might take up to 20 mins to generate..."
 
-until [[ $(kubectl describe managedcertificate) == "" ]]; do
-  echo "Waiting for cert to become available..."
-  sleep 120
-done
+# until [[ $(kubectl describe managedcertificate) == "" ]]; do
+#   echo "Waiting for cert to become available..."
+#   sleep 120
+# done
