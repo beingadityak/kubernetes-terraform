@@ -1,7 +1,6 @@
-FROM node:10.15
-WORKDIR '/app'
-COPY ./package.json ./
-COPY ./package-lock.json ./
+FROM node:8
+WORKDIR /usr/src/app
+COPY package*.json ./
 RUN npm install
 COPY . .
-CMD ["npm", "run", "start"]
+CMD ["npm", "start"]

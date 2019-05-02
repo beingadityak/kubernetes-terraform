@@ -1,30 +1,36 @@
-var http = require('http');
-var os = require('os');
-var hostname = os.hostname();
-const { Pool } = require('pg')
-const pgClient = new Pool({
-    user: keys.pgUser,
-    host: keys.pgHost,
-    database: keys.pgDatabase,
-    password: keys.pgPassword,
-    port: keys.pgPort
-})
+var express = require('express');
+var bodyParser = require('body-parser');
+var morgan = require('morgan');
 
-var msg = ""
+var app = express();
 
-pgClient.connect((err, client, release) => {
-  if (err) {
-    msg = "Error acquiring client : " + err.stack
-  }
-  else {
-    msg = "DB Connection successful"
-  }
-})
+var port = process.env.PORT || 8080;
 
-var handleRequest = function(request, response) {
-  response.writeHead(200);
-  response.end("Hello! Welcome to this Application!\n" + "Hostname is : "+ hostname);
-}
-var www = http.createServer(handleRequest);
-www.listen(8080);
-console.log("Server is listening to 8080");
+app.use(bodyParser.urlencoded({extended : true}));
+app.use(bodyParser.json());
+app.use(morgan('dev'));
+
+// allow CORS -> https://enable-cors.org/server_expressjs.html
+app.use('*', function(req, res, next) {
+     res.header('Access-Control-Allow-Origin', "*");
+     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+     next();
+});
+
+var api = require('./routes/api')(app,express);
+
+app.use('/api',api);
+
+app.get('*',function(req,res){
+    res.status(200).json({
+        'message' : 'Welcome to Comics Geek!'
+    })
+});
+
+app.listen(port, function(err){
+    if(err)
+    {
+        console.log(err);
+    }
+    console.log('Server started @ PORT : ',port);
+});
