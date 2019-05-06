@@ -1,4 +1,4 @@
-# DevOps assignment
+# Kubernetes With Terraform
 
 I have deployed a simple Node.js application in Kubernetes with separate deployments for Node.js and PostgreSQL database. The code for the same resides in `app` directory. This app basically provides you random strips of various comics through web scraping (List available at `/api` endpoint).
 
