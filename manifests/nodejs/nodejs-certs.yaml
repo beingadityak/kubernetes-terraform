@@ -4,4 +4,4 @@ metadata:
   name: nodejs-domain-certificate
 spec:
   domains:
-    - nodejswebsitegcp.tk
+    - YOURDOMAIN
